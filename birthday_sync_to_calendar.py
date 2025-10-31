@@ -18,7 +18,6 @@ from googleapiclient.discovery import build
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
 # --- Funkcje pomocnicze ---
-
 def resource_path(relative_path):
     """ Zwraca poprawną ścieżkę do zasobów (dla trybu deweloperskiego i .exe). """
     try:
@@ -34,7 +33,6 @@ class CenteredItemDelegate(QStyledItemDelegate):
         option.displayAlignment = Qt.AlignCenter
 
 # --- Główna klasa aplikacji ---
-
 class BirthdayApp(QMainWindow):
     def __init__(self):
         super().__init__()
