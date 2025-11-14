@@ -1,2 +1,6 @@
 data.json
+credentials.json
+token.json
+*.lock
+.venv/
 
