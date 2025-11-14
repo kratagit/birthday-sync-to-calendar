@@ -1,6 +1,7 @@
 import sys
 import json
 import os
+from pathlib import Path
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QVBoxLayout, QHBoxLayout, QWidget,
     QLabel, QLineEdit, QPushButton, QTableWidget, QTableWidgetItem, QMessageBox,
@@ -26,6 +27,12 @@ def resource_path(relative_path):
         base_path = os.path.abspath(".")
     return os.path.join(base_path, relative_path)
 
+def get_app_data_dir():
+    """ Zwraca ścieżkę do folderu danych aplikacji w Dokumentach użytkownika. """
+    documents_path = Path.home() / "Documents" / "BirthdayApp"
+    documents_path.mkdir(parents=True, exist_ok=True)
+    return documents_path
+
 class CenteredItemDelegate(QStyledItemDelegate):
     """ Delegat do wyśrodkowywania tekstu w QComboBox. """
     def initStyleOption(self, option, index):
@@ -45,6 +52,7 @@ class BirthdayApp(QMainWindow):
             print(f"Nie udało się załadować ikony: {e}")
 
         # Dane
+        self.data_file_path = get_app_data_dir() / "data.json"
         self.load_data()
 
         # Przelicz wiek przy starcie aplikacji
@@ -168,8 +176,7 @@ class BirthdayApp(QMainWindow):
     # --- Metody obsługi danych ---
 
     def load_data(self):
-        """ Wczytuje dane z pliku data.json z folderu roboczego. """
-        self.data_file_path = os.path.join(os.getcwd(), "data.json")
+        """ Wczytuje dane z pliku data.json z folderu Dokumenty użytkownika. """
         try:
             with open(self.data_file_path, "r", encoding='utf-8') as file:
                 self.data = json.load(file)
@@ -178,8 +185,7 @@ class BirthdayApp(QMainWindow):
             self.save_data()
 
     def save_data(self):
-        """ Zapisuje dane do pliku data.json w folderze roboczym. """
-        self.data_file_path = os.path.join(os.getcwd(), "data.json")
+        """ Zapisuje dane do pliku data.json w folderze Dokumenty użytkownika. """
         with open(self.data_file_path, "w", encoding='utf-8') as file:
             json.dump(self.data, file, indent=4, ensure_ascii=False)
 
@@ -292,8 +298,8 @@ class BirthdayApp(QMainWindow):
 
         creds = None
         try:
-            # Użyj os.getcwd() dla token.json i resource_path() dla credentials.json
-            token_path = os.path.join(os.getcwd(), "token.json")
+            # Użyj folderu Dokumenty dla token.json i resource_path() dla credentials.json
+            token_path = get_app_data_dir() / "token.json"
             credentials_path = resource_path("credentials.json")
 
             progress.setLabelText("Autoryzacja Google...")
