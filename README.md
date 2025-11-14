@@ -107,7 +107,7 @@ To use the Google Calendar sync feature:
 
 ## ⚙️ System Requirements
 
-- **Operating System:** Windows, macOS, or Linux
+- **Operating System:** Windows
 - **Internet Connection:** Required only for Google Calendar sync
 - **Google Account:** Required only if you want to sync with Google Calendar
 
