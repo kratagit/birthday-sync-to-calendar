@@ -122,14 +122,6 @@ To use the Google Calendar sync feature:
 **Problem:** Birthdays aren't showing up in Google Calendar
 - **Solution:** Look for a calendar named "Birthdays" in your Google Calendar sidebar and make sure it's checked/visible
 
-## 👤 Author
-
-**Krata**
-- GitHub: [@gitzakratami](https://github.com/gitzakratami)
-
-## 📄 License
-
-This project is licensed under the MIT License.
 
 ---
 
