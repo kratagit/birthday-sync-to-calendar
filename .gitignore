@@ -1,6 +1,71 @@
+tworzenie.txt
+old_birthday_sync_to_calendar.py
 data.json
 credentials.json
 token.json
+app_icon.ico
 *.lock
 .venv/
 
+# Bajtkod Pythona (pliki skompilowane)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Środowiska wirtualne (Virtual Environments)
+.venv/
+venv/
+ENV/
+env/
+bin/
+lib/
+develop-eggs/
+dist/
+eggs/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Pliki konfiguracji środowiskowej (Sekretne klucze, API keys)
+.env
+.venv
+.env.test
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Testy i pokrycie kodu (Pytest, Coverage)
+htmlcov/
+.tox/
+.nositests/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.pyo
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Narzędzia do statycznej analizy (Mypy, Pyre)
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.typeguard_cache/
+
+# Pliki systemowe i edytorów
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
