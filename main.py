@@ -1,6 +1,6 @@
 import sys
 import os
-from PyQt5.QtWidgets import QApplication, QMessageBox
+from PyQt5.QtWidgets import QApplication, QMessageBox, QStyleFactory
 from gui import BirthdayApp
 
 if __name__ == "__main__":
@@ -17,6 +17,7 @@ if __name__ == "__main__":
             f.write(str(os.getpid()))
         
         app = QApplication(sys.argv)
+        app.setStyle(QStyleFactory.create("Fusion"))
         window = BirthdayApp()
         window.show()
         sys.exit(app.exec_())

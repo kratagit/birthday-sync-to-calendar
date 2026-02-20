@@ -2,7 +2,8 @@ import sys
 from PyQt5 import uic
 from PyQt5.QtWidgets import (
     QMainWindow, QMessageBox, QTableWidgetItem, 
-    QInputDialog, QStyledItemDelegate, QHeaderView
+    QInputDialog, QStyledItemDelegate, QHeaderView,
+    QStyleOptionComboBox, QStyle
 )
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
@@ -40,6 +41,12 @@ class BirthdayApp(QMainWindow):
 
         # Konfiguracja UI
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.horizontalLayout_labels.setStretch(0, 1)
+        self.horizontalLayout_labels.setStretch(1, 1)
+        self.horizontalLayout_labels.setStretch(2, 1)
+        self.horizontalLayout_combos.setStretch(0, 1)
+        self.horizontalLayout_combos.setStretch(1, 1)
+        self.horizontalLayout_combos.setStretch(2, 1)
         self.setup_combos()
 
         # Podpięcie przycisków
@@ -64,20 +71,39 @@ class BirthdayApp(QMainWindow):
 
         self.configure_date_validators(current_date)
 
+    def balance_combo_text_with_dropdown(self, combo):
+        line_edit = combo.lineEdit()
+        if line_edit is None:
+            return
+
+        option = QStyleOptionComboBox()
+        combo.initStyleOption(option)
+        arrow_rect = combo.style().subControlRect(
+            QStyle.CC_ComboBox,
+            option,
+            QStyle.SC_ComboBoxArrow,
+            combo
+        )
+
+        left_margin = max(0, arrow_rect.width())
+        line_edit.setTextMargins(left_margin, 0, 0, 0)
+
     def configure_date_validators(self, current_date):
         # Dzień
         self.day_combo.addItems([str(d) for d in range(1, 32)])
         self.day_combo.setCurrentText(str(current_date.day))
         self.day_combo.lineEdit().setAlignment(Qt.AlignCenter)
         self.day_combo.setItemDelegate(CenteredItemDelegate(self.day_combo))
+        self.balance_combo_text_with_dropdown(self.day_combo)
         self.day_combo.currentTextChanged.connect(
-             lambda: self.validate_input(self.day_combo, range(1, 32), current_date.day)
+            lambda: self.validate_input(self.day_combo, range(1, 32), current_date.day)
         )
         # Miesiąc
         self.month_combo.addItems([str(m) for m in range(1, 13)])
         self.month_combo.setCurrentText(str(current_date.month))
         self.month_combo.lineEdit().setAlignment(Qt.AlignCenter)
         self.month_combo.setItemDelegate(CenteredItemDelegate(self.month_combo))
+        self.balance_combo_text_with_dropdown(self.month_combo)
         self.month_combo.currentTextChanged.connect(
             lambda: self.validate_input(self.month_combo, range(1, 13), current_date.month)
         )
@@ -86,6 +112,7 @@ class BirthdayApp(QMainWindow):
         self.year_combo.setCurrentText(str(current_date.year))
         self.year_combo.lineEdit().setAlignment(Qt.AlignCenter)
         self.year_combo.setItemDelegate(CenteredItemDelegate(self.year_combo))
+        self.balance_combo_text_with_dropdown(self.year_combo)
         self.year_combo.currentTextChanged.connect(
             lambda: self.validate_input(self.year_combo, range(1900, current_date.year + 1), current_date.year, min_length=4)
         )

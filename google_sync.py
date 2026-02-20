@@ -14,6 +14,44 @@ class GoogleCalendarSync:
     def __init__(self, parent_window):
         self.parent = parent_window
 
+    @staticmethod
+    def _extract_event_date(event):
+        start_data = event.get('start', {})
+        if start_data.get('date'):
+            return datetime.strptime(start_data['date'], '%Y-%m-%d').date()
+        if start_data.get('dateTime'):
+            return datetime.fromisoformat(start_data['dateTime'].replace('Z', '+00:00')).date()
+        return None
+
+    def _get_existing_event_keys(self, service, calendar_id):
+        existing_keys = set()
+        page_token = None
+
+        while True:
+            response = service.events().list(
+                calendarId=calendar_id,
+                singleEvents=False,
+                maxResults=2500,
+                pageToken=page_token
+            ).execute()
+
+            for event in response.get('items', []):
+                summary = (event.get('summary') or '').strip()
+                if not summary:
+                    continue
+
+                event_date = self._extract_event_date(event)
+                if not event_date:
+                    continue
+
+                existing_keys.add((summary.casefold(), event_date.month, event_date.day))
+
+            page_token = response.get('nextPageToken')
+            if not page_token:
+                break
+
+        return existing_keys
+
     def export_events(self, data_list):
         # 1. Potwierdzenie użytkownika
         reply = QMessageBox.question(
@@ -77,13 +115,15 @@ class GoogleCalendarSync:
                 calendar_id = created_calendar['id']
 
             # 5. Pobranie istniejących wydarzeń (żeby nie dublować)
-            existing_events = service.events().list(calendarId=calendar_id, singleEvents=True).execute().get('items', [])
+            existing_event_keys = self._get_existing_event_keys(service, calendar_id)
             
             progress.setLabelText("Eksportowanie urodzin...")
             progress.setValue(3)
             QApplication.processEvents()
 
             # 6. Pętla dodawania wydarzeń
+            added_count = 0
+            skipped_count = 0
             for i, person in enumerate(data_list):
                 progress.setValue(3 + i)
                 if progress.wasCanceled():
@@ -100,15 +140,11 @@ class GoogleCalendarSync:
 
                 # Tytuł
                 summary = f'Urodziny: {name} {year}'
+                event_key = (summary.casefold(), dt_obj.month, dt_obj.day)
 
                 # Sprawdzenie czy wydarzenie już istnieje
-                event_exists = any(
-                    event.get('summary') == summary and
-                    (event.get('start', {}).get('date') == birth_date)
-                    for event in existing_events
-                )
-
-                if event_exists:
+                if event_key in existing_event_keys:
+                    skipped_count += 1
                     continue
 
                 # Definicja wydarzenia
@@ -123,10 +159,18 @@ class GoogleCalendarSync:
                     }
                 }
                 service.events().insert(calendarId=calendar_id, body=event_body).execute()
+                existing_event_keys.add(event_key)
+                added_count += 1
 
             # 7. Zakończenie
             progress.setValue(len(data_list) + 3)
-            QMessageBox.information(self.parent, "Sukces", "Urodziny zostały pomyślnie zsynchronizowane z kalendarzem 'Birthdays'!")
+            QMessageBox.information(
+                self.parent,
+                "Sukces",
+                "Synchronizacja zakończona.\n"
+                f"Dodano: {added_count}\n"
+                f"Pominięto istniejące: {skipped_count}"
+            )
 
         except FileNotFoundError as e:
             QMessageBox.critical(self.parent, "Błąd pliku", f"Nie znaleziono wymaganego pliku: {e}")

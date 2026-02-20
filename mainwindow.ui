@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>550</height>
+    <height>750</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -19,24 +19,148 @@
   <property name="windowTitle">
    <string>Birthday Sync To Calendar</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow, QWidget {
+    background-color: #1f2937;
+    color: #e5e7eb;
+    font-size: 12px;
+}
+
+QLabel {
+    color: #e5e7eb;
+    font-size: 12px;
+}
+
+QLineEdit, QComboBox, QTableWidget {
+    background-color: #111827;
+    color: #f9fafb;
+    border: 1px solid #374151;
+    border-radius: 6px;
+    padding: 4px 6px;
+    selection-background-color: #2563eb;
+    selection-color: #ffffff;
+}
+
+QLineEdit:focus, QComboBox:focus {
+    border: 1px solid #2563eb;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 18px;
+    background-color: #374151;
+    border-left: 1px solid #4b5563;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+QComboBox::down-arrow {
+    image: none;
+    width: 0px;
+    height: 0px;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid #cbd5e1;
+    margin-right: 2px;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #111827;
+    color: #f9fafb;
+    border: 1px solid #374151;
+    selection-background-color: #2563eb;
+    selection-color: #ffffff;
+    outline: 0;
+}
+
+QPushButton {
+    background-color: #2563eb;
+    color: #ffffff;
+    border: 1px solid #2563eb;
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-weight: 600;
+}
+
+QPushButton:hover {
+    background-color: #1d4ed8;
+}
+
+QPushButton:pressed {
+    background-color: #1e40af;
+}
+
+QHeaderView::section {
+    background-color: #1f2937;
+    color: #bfdbfe;
+    border: 0;
+    border-bottom: 1px solid #374151;
+    padding: 5px;
+    font-weight: 600;
+}
+
+QTableWidget {
+    gridline-color: #374151;
+    alternate-background-color: #0f172a;
+}
+
+QTableWidget::item {
+    padding: 4px;
+    border: none;
+}
+
+QScrollBar:vertical {
+    background: #111827;
+    width: 8px;
+    margin: 0;
+    border-radius: 4px;
+}
+
+QScrollBar::handle:vertical {
+    background: #4b5563;
+    min-height: 20px;
+    border-radius: 4px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #6b7280;
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical,
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+    border: none;
+}
+
+QMessageBox, QInputDialog {
+    background-color: #1f2937;
+}
+
+QToolTip {
+    background-color: #111827;
+    color: #f9fafb;
+    border: 1px solid #374151;
+}</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <!-- Tutaj dodano marginesy (odstępy od krawędzi okna) -->
     <property name="leftMargin">
-     <number>5</number>
+        <number>8</number>
     </property>
     <property name="topMargin">
-     <number>5</number>
+        <number>8</number>
     </property>
     <property name="rightMargin">
-     <number>5</number>
+        <number>8</number>
     </property>
     <property name="bottomMargin">
-     <number>5</number>
+        <number>8</number>
     </property>
     <!-- Tutaj dodano spacing (odstępy między elementami w środku) -->
     <property name="spacing">
-     <number>5</number>
+        <number>6</number>
     </property>
     
     <item>
