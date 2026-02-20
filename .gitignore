@@ -6,6 +6,8 @@ token.json
 app_icon.ico
 *.lock
 .venv/
+build/
+BirthdaySync.spec
 
 # Bajtkod Pythona (pliki skompilowane)
 __pycache__/
